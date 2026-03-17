@@ -1,0 +1,10 @@
+<td>
+  <form hx-post="{{ url_for('increment') }}" hx-target="closest td" hx-swap="outerHTML">
+    <input type="hidden" name="user" value="{{ user }}" />
+    <input type="hidden" name="category" value="{{ category }}" />
+    <button type="submit" class="cell-btn">
+      +1
+      <span class="value">{{ value }}</span>
+    </button>
+  </form>
+</td>

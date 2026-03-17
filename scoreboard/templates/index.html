@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scoreboard</title>
+  <link rel="stylesheet" href="https://unpkg.com/modern-normalize/modern-normalize.css" />
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+  <div class="container">
+    <h1>Scoreboard</h1>
+
+    <form method="post" action="{{ url_for('reset') }}" class="reset-form">
+      <button type="submit" class="reset-btn">Reset All</button>
+    </form>
+
+    <div class="table-wrapper">
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th class="category-col"></th>
+            {% for name in names %}
+              <th>{{ name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for cat in categories %}
+            <tr>
+              <td class="category-label">{{ cat }}</td>
+              {% for name in names %}
+                <td>
+                  <form hx-post="{{ url_for('increment') }}" hx-target="closest td" hx-swap="outerHTML">
+                    <input type="hidden" name="user" value="{{ name }}" />
+                    <input type="hidden" name="category" value="{{ cat }}" />
+                    <button type="submit" class="cell-btn">
+                      +1
+                      <span class="value">{{ counts[(name, cat)] }}</span>
+                    </button>
+                  </form>
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
